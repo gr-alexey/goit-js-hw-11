@@ -1,6 +1,6 @@
 import './css/styles.css';
 import Notiflix, { Notify } from 'notiflix';
-import SimpleLightbox from "simplelightbox";
+
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { GetPixabayApi } from './fetchAPI';
 
