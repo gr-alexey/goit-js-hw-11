@@ -1,6 +1,6 @@
 import './css/styles.css';
 import Notiflix, { Notify } from 'notiflix';
-
+import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { GetPixabayApi } from './fetchAPI';
 
@@ -75,7 +75,7 @@ async function onFormSubmit(event) {
         return Notify.warning("Sorry, there are no images matching your search query. Please try again.")}
     Notify.success(`Hooray! We found ${totalHits} images.`);
     renderGallery(hits);
-    // lightbox.refresh();
+    lightbox.refresh();
    } catch(error) {console.log(error.message)}
    buttonRef.style.display = 'block';
     
@@ -89,7 +89,7 @@ async function onLoadMore() {
  try{ 
 const {hits,totalHits} = await getPixabayApi.fetchImg();
 renderGallery(hits);
-// lightbox.refresh();
+lightbox.refresh();
 } catch(error) {console.log(error.message)} 
 }
 
@@ -98,7 +98,7 @@ galleryRef.innerHTML = "";
 
 }
 
-// const lightbox = new SimpleLightbox('.gallery a', {
-//    captionsData:'alt',
-//    captionDelay: 300,  
-//      });
+const lightbox = new SimpleLightbox('.photo-card a', {
+   captionsData:'alt',
+   captionDelay: 300,  
+     });
