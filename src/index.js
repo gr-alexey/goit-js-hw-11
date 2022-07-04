@@ -14,6 +14,7 @@ Notify.init({
 const galleryRef = document.querySelector('.gallery');
 const formRef = document.querySelector('.search-form');
 const buttonRef = document.querySelector('.load-more');
+buttonRef.style.display = 'none';
 
 formRef.addEventListener('submit', onFormSubmit);
 buttonRef.addEventListener('click', onLoadMore);
@@ -33,8 +34,8 @@ function makeGalleryMarkup(searchedImages) {
     comments,
     downloads,
 }) => `<div class="photo-card">
-<a href="${largeImageURL}">
-<img src="${webformatURL}" alt="${tags}" loading="lazy" />
+<a class='gallery__link' href="${largeImageURL}">
+<img class='gallery__image' src="${webformatURL}" alt="${tags}" loading="lazy" />
 <div class="info">
   <p class="info-item">
     <b>Likes: ${likes}</b>
@@ -76,7 +77,7 @@ async function onFormSubmit(event) {
     renderGallery(hits);
     // lightbox.refresh();
    } catch(error) {console.log(error.message)}
-    
+   buttonRef.style.display = 'block';
     
     event.target.reset();
 
