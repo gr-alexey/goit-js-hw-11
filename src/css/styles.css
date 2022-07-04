@@ -18,3 +18,15 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+ 
+img {
+  width: 180px;
+  height: 180px;
+  margin: 15px;
+}
+
+.gallery {
+   display: flex;
+   flex-wrap: wrap;
+   
+}

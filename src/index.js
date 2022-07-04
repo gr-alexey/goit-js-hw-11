@@ -13,8 +13,11 @@ Notify.init({
 
 const galleryRef = document.querySelector('.gallery');
 const formRef = document.querySelector('.search-form');
+const buttonRef = document.querySelector('.load-more');
 
 formRef.addEventListener('submit', onFormSubmit);
+buttonRef.addEventListener('click', onLoadMore);
+
 const getPixabayApi = new GetPixabayApi();
 
 
@@ -53,13 +56,48 @@ function makeGalleryMarkup(searchedImages) {
 }
 
 function renderGallery(searchedImages) {
- galleryRef.insertAdjacentHTML('beforeend', makeGalleryMarkup());
+ galleryRef.insertAdjacentHTML('beforeend', makeGalleryMarkup(searchedImages));
 }
 
 async function onFormSubmit(event) {
-   await event.preventDefault();
-   const {hits} =  getPixabayApi.fetchImg();
+    event.preventDefault();
+    clearGallery();
+    getPixabayApi.resetPage();
+    const request = event.target.elements.searchQuery.value.trim();
+    if(!request) {return Notify.info("Input some to search")}
+   
+    
+   getPixabayApi.searchQueryRequest = request;
+   try {
+    const {hits,totalHits} = await getPixabayApi.fetchImg();
+    if(!totalHits) {
+        return Notify.warning("Sorry, there are no images matching your search query. Please try again.")}
+    Notify.success(`Hooray! We found ${totalHits} images.`);
     renderGallery(hits);
+    lightbox.refresh();
+   } catch(error) {console.log(error.message)}
+    
+    
+    event.target.reset();
 
 
 }
+
+async function onLoadMore() {
+
+ try{ 
+const {hits,totalHits} = await getPixabayApi.fetchImg();
+renderGallery(hits);
+lightbox.refresh();
+} catch(error) {console.log(error.message)} 
+}
+
+function clearGallery() {
+galleryRef.innerHTML = "";
+
+}
+
+const lightbox = new SimpleLightbox('.gallery a', {
+   captionsData:'alt',
+   captionDelay: 300,  
+     });
