@@ -56,10 +56,8 @@ img {
 
 .search-form__input {
   padding: 0px 5px;
-
   width: 200px;
   height: 30px;
-
   border: 1px solid #007bff;
   border-radius: 5px;
 }
@@ -95,4 +93,10 @@ img {
 
 }
 
-
+.visually-hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}

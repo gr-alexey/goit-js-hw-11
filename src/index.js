@@ -3,17 +3,24 @@ import Notiflix, { Notify } from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { GetPixabayApi } from './fetchAPI';
+import { clearGallery } from './clearGallery';
 
 Notify.init({
-    position:'center-top',
+    position:'from-right',
     timeout: 2000,
-    cssAnimationStyle: 'from-top',
+    cssAnimationStyle: 'from-right',
     showOnlyTheLastOne: true,
 })
+
+const lightbox = new SimpleLightbox('.photo-card a', {
+    captionsData:'alt',
+    captionDelay: 300,  
+      });
 
 const galleryRef = document.querySelector('.gallery');
 const formRef = document.querySelector('.search-form');
 const buttonRef = document.querySelector('.load-more');
+const card = document.querySelector('.photo-card')
 buttonRef.style.display = 'none';
 
 formRef.addEventListener('submit', onFormSubmit);
@@ -65,8 +72,8 @@ async function onFormSubmit(event) {
     clearGallery();
     getPixabayApi.resetPage();
     const request = event.target.elements.searchQuery.value.trim();
-    if(!request) {return Notify.info("Input some to search")}
-   
+    if(!request) {return Notify.info("Input some to search")
+}
     
    getPixabayApi.searchQueryRequest = request;
    try {
@@ -89,16 +96,21 @@ async function onLoadMore() {
  try{ 
 const {hits,totalHits} = await getPixabayApi.fetchImg();
 renderGallery(hits);
+
+//після завантаження усіх фото видалили кнопку загрузити ще 
+const total = document.querySelectorAll('.photo-card').length;
+    console.log(total);
+    if (total >= totalHits) {
+        buttonRef.classList.add('visually-hidden');
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+    }
+
 lightbox.refresh();
-} catch(error) {console.log(error.message)} 
-}
 
-function clearGallery() {
-galleryRef.innerHTML = "";
+    } catch(error) {console.log(error.message)} 
 
 }
 
-const lightbox = new SimpleLightbox('.photo-card a', {
-   captionsData:'alt',
-   captionDelay: 300,  
-     });
+
+
+
