@@ -17,16 +17,16 @@ const lightbox = new SimpleLightbox('.photo-card a', {
     captionDelay: 300,  
       });
 const refs = {
-galleryRef: document.querySelector('.gallery'),
-formRef: document.querySelector('.search-form'),
-buttonRef: document.querySelector('.load-more'),
-card: document.querySelector('.photo-card'),
+  gallery: document.querySelector('.gallery'),
+  form: document.querySelector('.search-form'),
+  button: document.querySelector('.load-more'),
+  card: document.querySelector('.photo-card'),
 };
 
-buttonRef.style.display = 'none';
+refs.button.style.display = 'none';
 
-formRef.addEventListener('submit', onFormSubmit);
-buttonRef.addEventListener('click', onLoadMore);
+refs.form.addEventListener('submit', onFormSubmit);
+refs.button.addEventListener('click', onLoadMore);
 
 const getPixabayApi = new GetPixabayApi();
 
@@ -66,7 +66,7 @@ function makeGalleryMarkup(searchedImages) {
 };
 
 function renderGallery(searchedImages) {
- galleryRef.insertAdjacentHTML('beforeend', makeGalleryMarkup(searchedImages));
+ refs.gallery.insertAdjacentHTML('beforeend', makeGalleryMarkup(searchedImages));
 };
 
 async function onFormSubmit(event) {
@@ -86,7 +86,7 @@ async function onFormSubmit(event) {
     renderGallery(hits);
     lightbox.refresh();
    } catch(error) {console.log(error.message)}
-   buttonRef.style.display = 'block';
+   refs.button.style.display = 'block';
     
     event.target.reset();
 
@@ -102,7 +102,7 @@ renderGallery(hits);
 const total = document.querySelectorAll('.photo-card').length;
     console.log(total);
     if (total >= totalHits) {
-        buttonRef.classList.add('visually-hidden');
+        refs.button.classList.add('visually-hidden');
       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     }
 
