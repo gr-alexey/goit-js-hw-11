@@ -16,11 +16,13 @@ const lightbox = new SimpleLightbox('.photo-card a', {
     captionsData:'alt',
     captionDelay: 300,  
       });
+const refs = {
+galleryRef: document.querySelector('.gallery'),
+formRef: document.querySelector('.search-form'),
+buttonRef: document.querySelector('.load-more'),
+card: document.querySelector('.photo-card'),
+};
 
-const galleryRef = document.querySelector('.gallery');
-const formRef = document.querySelector('.search-form');
-const buttonRef = document.querySelector('.load-more');
-const card = document.querySelector('.photo-card')
 buttonRef.style.display = 'none';
 
 formRef.addEventListener('submit', onFormSubmit);
@@ -61,11 +63,11 @@ function makeGalleryMarkup(searchedImages) {
 </div>`
 )
 .join('');
-}
+};
 
 function renderGallery(searchedImages) {
  galleryRef.insertAdjacentHTML('beforeend', makeGalleryMarkup(searchedImages));
-}
+};
 
 async function onFormSubmit(event) {
     event.preventDefault();
@@ -89,7 +91,7 @@ async function onFormSubmit(event) {
     event.target.reset();
 
 
-}
+};
 
 async function onLoadMore() {
 
@@ -97,7 +99,6 @@ async function onLoadMore() {
 const {hits,totalHits} = await getPixabayApi.fetchImg();
 renderGallery(hits);
 
-//після завантаження усіх фото видалили кнопку загрузити ще 
 const total = document.querySelectorAll('.photo-card').length;
     console.log(total);
     if (total >= totalHits) {
@@ -108,8 +109,7 @@ const total = document.querySelectorAll('.photo-card').length;
 lightbox.refresh();
 
     } catch(error) {console.log(error.message)} 
-
-}
+};
 
 
 
